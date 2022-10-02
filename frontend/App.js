@@ -36,7 +36,7 @@ function App() {
                 <Stack.Screen
                     name="InventoryList"
                     component={InventoryListScreen}
-                    options={{ title: 'Inventários' }}
+                    options={{ title: 'Lista de Inventários' }}
                 />
                 <Stack.Screen
                     name="Inventory"
