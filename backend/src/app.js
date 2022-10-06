@@ -3,6 +3,10 @@ const bodyParser = require('body-parser')
 const app = express()
 const jsonParser = bodyParser.json()
 
+//mc855_db - user
+//grupoinventario - password
+
+
 // TODO: extrair conexão com banco para /backend/db/conn.js
 const dbo = require('../db/conn.js')
 require('dotenv').config()
