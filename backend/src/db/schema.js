@@ -1,35 +1,35 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const { Schema } = mongoose;
+const { Schema } = mongoose
 
 const patrimonioSchema = new Schema({
-  areaPatrimonio:  String,
+  areaPatrimonio: String,
   predio: String,
   sala: String,
   tipo: String,
-  identificador:   String,
+  identificador: String,
   descricao: String,
   marca: String,
   modelo: String,
-  serie: String,
-});
+  serie: String
+})
 
-module.exports = mongoose.model("Patrimonio", patrimonioSchema);
+module.exports = mongoose.model('Patrimonio', patrimonioSchema)
 
-patrimonioSchema.methods.findByArea = function(cb) {
-    return mongoose.model('Patrimonio').find({areaPatrimonio: this.areaPatrimonio}, cb);
-};
+patrimonioSchema.methods.findByArea = function (cb) {
+  return mongoose
+    .model('Patrimonio')
+    .find({ areaPatrimonio: this.areaPatrimonio }, cb)
+}
 
-patrimonioSchema.methods.findByPredio = function(cb) {
-    return mongoose.model('Patrimonio').find({predio: this.predio}, cb);
-};
+patrimonioSchema.methods.findByPredio = function (cb) {
+  return mongoose.model('Patrimonio').find({ predio: this.predio }, cb)
+}
 
-patrimonioSchema.methods.findBySala = function(cb) {
-    return mongoose.model('Patrimonio').find({sala: this.sala}, cb);
-};
+patrimonioSchema.methods.findBySala = function (cb) {
+  return mongoose.model('Patrimonio').find({ sala: this.sala }, cb)
+}
 
-patrimonioSchema.methods.findByTipo = function(cb) {
-    return mongoose.model('Patrimonio').find({tipo: this.tipo}, cb);
-};
-
-
+patrimonioSchema.methods.findByTipo = function (cb) {
+  return mongoose.model('Patrimonio').find({ tipo: this.tipo }, cb)
+}

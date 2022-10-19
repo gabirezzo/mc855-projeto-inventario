@@ -1,3 +1,3 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-model = mongoose.Model('Patrimonio');
+model = mongoose.Model('Patrimonio')
