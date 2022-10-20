@@ -9,6 +9,7 @@ create_room_list = (navigation) => {
         rooms.push(
             <Button
                 title={room_list[i].toString() + i}
+                style={styles.btnClickContain}
                 onPress={() => navigation.navigate(
                     'Room',
                     {
@@ -35,3 +36,17 @@ export default function InventoryScreen ({ route, navigation }) {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    btnClickContain: {
+      flexDirection: 'row',
+      padding: 5,
+      marginTop: 5,
+      marginBottom: 5,
+    },
+    btnContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+    }
+  });

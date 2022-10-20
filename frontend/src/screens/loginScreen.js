@@ -12,8 +12,23 @@ export default function LoginScreen ({ navigation }) {
             
             <Button
                 title="Login"
+                style={styles.btnClickContain}
                 onPress={() => navigation.navigate('Home')}
             />
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    btnClickContain: {
+      flexDirection: 'row',
+      padding: 5,
+      marginTop: 5,
+      marginBottom: 5,
+    },
+    btnContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+    }
+  });
