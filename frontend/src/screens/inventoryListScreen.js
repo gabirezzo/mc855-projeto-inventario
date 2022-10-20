@@ -25,7 +25,7 @@ create_list = (navigation) => {
 export default function InventoryListScreen({ navigation }) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>QQ TA ACONTECENDO AQUI KRL</Text>
+            <Text style={{color: 'black'}}>Inventário</Text>
             {this.create_list(navigation)}
         </View>
     );
