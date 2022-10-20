@@ -7,7 +7,7 @@ const patrimonioSchema = new Schema({
   predio: String,
   sala: String,
   tipo: String,
-  identificador: String,
+  _id: String, //identificador
   descricao: String,
   marca: String,
   modelo: String,
