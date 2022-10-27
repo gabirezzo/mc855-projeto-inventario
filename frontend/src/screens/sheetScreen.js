@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, View, Text } from 'react-native';
+import { Button, View, StyleSheet, Text } from 'react-native';
 
 let a = 45
 

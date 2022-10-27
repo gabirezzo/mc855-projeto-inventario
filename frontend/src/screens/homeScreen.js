@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { Button, View, Text } from 'react-native';
+import { Button,StyleSheet, View, Text } from 'react-native';
 
 export default function HomeScreen({ navigation }) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text style={{color: 'black'}}>Home Screen</Text>
-            <Button
+            <View
                 title="Planilha"
                 style={styles.btnClickContain}
                 onPress={() => navigation.navigate('Sheet')}
             />
-            <Button
+            <View
                 title="Inventarios"
                 style={styles.btnClickContain}
                 onPress={() => navigation.navigate('InventoryList')}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, View, Text, TextInput } from 'react-native';
+import { Button, StyleSheet, View, Text, TextInput } from 'react-native';
 
 const room_list = [1,2,3,4,5,6,7,8,9]
 

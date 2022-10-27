@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, View, Text } from 'react-native';
+import { Button, StyleSheet, View, Text } from 'react-native';
 
 let inventory_list = ['1', '2', '3','inventario', 'top', 'oloco']
 
