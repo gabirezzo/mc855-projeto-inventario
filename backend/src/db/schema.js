@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
@@ -14,7 +14,6 @@ const patrimonioSchema = new Schema({
   serie: String
 })
 
-module.exports = mongoose.model('Patrimonio', patrimonioSchema)
 
 patrimonioSchema.methods.findByArea = function (cb) {
   return mongoose
@@ -33,3 +32,4 @@ patrimonioSchema.methods.findBySala = function (cb) {
 patrimonioSchema.methods.findByTipo = function (cb) {
   return mongoose.model('Patrimonio').find({ tipo: this.tipo }, cb)
 }
+module.exports = mongoose.model('Patrimonio', patrimonioSchema)

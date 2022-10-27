@@ -1,7 +1,19 @@
+//imports
 const reader = require('xlsx');
-
+const mongoose = require('mongoose');
+//filepath
 const file = reader.readFile('./tabelatest.xlsx');
+//db path
+const url =
+  'mongodb+srv://mc855_db:grupoinventario@cluster0.9pr1cy4.mongodb.net/?retryWrites=true&w=majority';
 
+//dbconn params
+const connectionParams = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}
+
+//read the data
 const sheets = file.SheetNames;
 let data = [];
 
@@ -11,16 +23,41 @@ for(let i = 0; i < sheets.length; i++){
          data.push(res)
       })
 }
+const db = mongoose.connection;
 
-console.log('data 0 ai:\n');
- //area do patrimonio
- //predio nao tem na tabela
- //sala nao tem na tabela
-console.log(data[0]['Tipo']);  //tipo
-console.log(data[0]['Identificador']);  //identificador
-console.log(data[0]['Descrição']);  //descricao
-console.log(data[0]['Marca']);  //marca
-console.log(data[0]['Modelo']);  //modelo
-console.log(data[0]['Série']);  //serie
+//connect to database
+mongoose
+  .connect(url, connectionParams)
+  .then(() => {
+    console.log('Connected to the database ')
+  })
+  .catch((err) => {
+    console.error(`Error connecting to the database. n${err}`)
+  })
 
+
+//import model
+const Patrimonio = require('./db/schema.js')
+
+//insert items in db
+for(let i = 0; i < data.length; i++){
+    //criar variavel de patrimonio
+    var pat = new Patrimonio({
+        areaPatrimonio: data[i]['Área de Patrimônio'],
+        predio:'null',
+        sala: 'null',
+        tipo: data[i]['Tipo'],
+        _id: data[i]['Identificador'],
+        descricao: data[i]['Descrição'],
+        marca: data[i]['Marca'],
+        modelo: data[i]['Modelo'],
+        serie: data[i]['Série'],
+    })
+
+    pat.save(function (err, book) {
+          if (err) return console.error(err);
+          console.log('item numero ' + i  + " saved to database.");
+        });
+
+}
 
