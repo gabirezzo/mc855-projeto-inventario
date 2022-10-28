@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 const file = reader.readFile('./tabelatest.xlsx');
 //db path
 const url =
-  'mongodb+srv://mc855_db:grupoinventario@cluster0.9pr1cy4.mongodb.net/?retryWrites=true&w=majority';
+  'mongodb+srv://adminventario:3jWCqzXW9kNbFh3j@cluster0.xobnfc9.mongodb.net/?retryWrites=true&w=majority';
+  //'mongodb+srv://mc855_db:grupoinventario@cluster0.9pr1cy4.mongodb.net/?retryWrites=true&w=majority';
 
 //dbconn params
 const connectionParams = {
