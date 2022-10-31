@@ -55,10 +55,13 @@ export const AppIcon = {
     height: 25
   },
   images: {
-    home: require("../assets/icons/home.png"),
-    defaultUser: require("../assets/icons/default_user.jpg"),
-    logout: require("../assets/icons/shutdown.png"),
-    menu: require("../assets/icons/menu.png")
+    // home: require("../assets/icons/home.png"),
+    // defaultUser: require("../assets/icons/default_user.jpg"),
+    // logout: require("../assets/icons/shutdown.png"),
+    // menu: require("../assets/icons/menu.png")
+    planilha: require("../src/assets/icons/sheets.png"),
+    logo: require("../src/assets/icons/logo.png"),
+    inventario: require("../src/assets/icons/inventory.png")
   }
 };
 

@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
+import {AppStyles} from '../AppStyles';
+import {AppIcon} from '../AppStyles';
 import { Button, View, Text, StyleSheet} from 'react-native';
 
 export default function RoomScreen ({ route, navigation }) {

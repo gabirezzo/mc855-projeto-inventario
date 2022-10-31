@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Pressable, View, StyleSheet, Text, TextInput,Alert,ActivityIndicator} from 'react-native';
+import {Pressable,Image, View, StyleSheet, Text, TextInput,Alert,ActivityIndicator} from 'react-native';
 import {AppStyles} from '../AppStyles';
+import {AppIcon} from '../AppStyles';
+
 
 export default function LoginScreen ({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
     return (
       <View style={styles.container}>
+        <Image source={AppIcon.images.logo}style={styles.btnIcon} />
         <Text style={[styles.title, styles.leftTitle]}>Login</Text>
         <View style={styles.InputContainer}>
           <TextInput
@@ -101,6 +104,10 @@ const styles = StyleSheet.create({
       borderColor: AppStyles.color.grey,
       borderRadius: AppStyles.borderRadius.main,
       backgroundColor: 'white'
+    },
+    btnIcon: {
+        height: 150,
+        width: 150,
     },
     body: {
       height: 42,
