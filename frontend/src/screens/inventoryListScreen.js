@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {AppStyles} from '../AppStyles';
 import {AppIcon} from '../AppStyles';
-import { Button, StyleSheet, View, Text } from 'react-native';
+import { Button, ScrollView, StyleSheet, View, Text } from 'react-native';
+import {Configuration} from '../Configuration';
+
 
 let inventory_list = ['1', '2', '3','inventario', 'top', 'oloco']
 
@@ -28,8 +30,10 @@ create_list = (navigation) => {
 export default function InventoryListScreen({ navigation }) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <ScrollView style={styles.container}>
             <Text style={{color: 'black'}}>Inventário</Text>
-            {this.create_list(navigation)}
+                 {this.create_list(navigation)}
+            </ScrollView>
         </View>
     );
 }
@@ -45,5 +49,17 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: 'row',
       alignItems: 'flex-start',
+    },
+    container: {
+        backgroundColor: 'white',
+        flex: 1,
+        padding: Configuration.home.listing_item.offset,
+      },
+    title: {
+        fontSize: AppStyles.fontSize.title,
+        fontWeight: 'bold',
+        color: AppStyles.color.blue,
+        marginTop: 20,
+        marginBottom: 20,
     }
   });
