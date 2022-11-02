@@ -10,7 +10,7 @@ const SCREEN_WIDTH = width < height ? width : height;
 const room_list = [1,2,3,4,5,6,7,8,9]
 
 
-export default function InventoryScreen ({ route, navigation }) {
+export default function InventoryScreen({ route, navigation }) {
 
     const onPressRoom = (item) => {
         navigation.navigate("Room", { item });
@@ -45,10 +45,10 @@ const ITEM_MARGIN = 20;
 
 const styles = StyleSheet.create({
     btnClickContain: {
-      flexDirection: 'row',
-      padding: 5,
-      marginTop: 5,
-      marginBottom: 5,
+        flexDirection: 'row',
+        padding: 5,
+        marginTop: 5,
+        marginBottom: 5,
     },
     btnContainer: {
       flex: 1,

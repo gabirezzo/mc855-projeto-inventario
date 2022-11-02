@@ -5,7 +5,7 @@ import { Button, Pressable, ScrollView, StyleSheet, View, Text } from 'react-nat
 import {Configuration} from '../Configuration';
 
 
-let inventory_list = ['1', '2', '3','inventario', 'top', 'oloco']
+let inventory_list = ['Inventário 1']
 
 create_list = (navigation) => {
     inventories = []
