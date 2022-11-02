@@ -15,6 +15,7 @@ import ItemScreen from './src/screens/itemScreen';
 const Stack = createNativeStackNavigator();
 
 function App() {
+
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Login">
@@ -56,6 +57,7 @@ function App() {
             </Stack.Navigator>
         </NavigationContainer>
     );
+
 }
 
 export default App;

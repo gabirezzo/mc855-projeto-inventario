@@ -3,10 +3,36 @@ import { Pressable, Image, TextInput, View, StyleSheet, Text } from 'react-nativ
 import {AppStyles} from '../AppStyles';
 import {AppIcon} from '../AppStyles';
 
+import FileBase64 from 'react-file-base64';
+import { getData } from '../api/functions';
+
 let a = 45;
 
 export default function SheetScreen ({ navigation }) {
+    const [item, setItem] = useState({ title: '', image: '' });
+    const [items, setItems] = useState([])
     const [obs, setObs] = useState('');
+
+    const onclickHandler = async () => {
+        // e.preventDefault();
+        console.log('1 meu deus')
+        const result = await getData();
+        console.log('2 meu deus')
+        setItems([...items, result]);
+        console.log(items)
+    }
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         console.log('ai mds q doido')
+    //         const result = await getItems();
+    //         console.log('fetch data;    m', result)
+    //         setItems(result)
+    //     }
+    //     fetchData()
+    // }, [])
+
+
     return (
         // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         //     <Button
@@ -36,7 +62,7 @@ export default function SheetScreen ({ navigation }) {
         <View>
         <Pressable
           style={styles.loginContainer}
-          onPress={() => navigation.navigate('Home')}>
+          onPress={() => onclickHandler()}>
           <Text style={[styles.loginText]}>Upload</Text>
         </Pressable>
         </View>
