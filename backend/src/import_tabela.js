@@ -36,6 +36,8 @@ mongoose
     console.error(`Error connecting to the database. n${err}`)
   })
 
+//clear database before importing new table
+mongoose.connection.dropDatabase();
 
 //import model
 const Patrimonio = require('./db/schema.js')
