@@ -15,21 +15,8 @@ const patrimonioSchema = new Schema({
 })
 
 
-patrimonioSchema.methods.findByArea = function (cb) {
-  return mongoose
-    .model('Patrimonio')
-    .find({ areaPatrimonio: this.areaPatrimonio }, cb)
-}
+patrimonioSchema.methods.findById = function(id) {
+   return this.find({ id });
+};
 
-patrimonioSchema.methods.findByPredio = function (cb) {
-  return mongoose.model('Patrimonio').find({ predio: this.predio }, cb)
-}
-
-patrimonioSchema.methods.findBySala = function (cb) {
-  return mongoose.model('Patrimonio').find({ sala: this.sala }, cb)
-}
-
-patrimonioSchema.methods.findByTipo = function (cb) {
-  return mongoose.model('Patrimonio').find({ tipo: this.tipo }, cb)
-}
 module.exports = mongoose.model('Patrimonio', patrimonioSchema)
