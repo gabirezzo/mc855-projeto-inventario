@@ -22,18 +22,32 @@ mongoose
 
 async function findById(id){
     pat = await Patrimonio.find({'_id' : id})
-    console.log(pat)
+    //console.log(pat)
+    return pat
 }
 
 async function findByPredio(predio){
-    let pat = await Patrimonio.find({'predio': predio})
-
+    pat = await Patrimonio.find({'predio': predio})
+    return pat
 }
 
 async function findBySala(sala){
     pat = await Patrimonio.find({'sala' : sala})
+    return pat
 }
 
-var predios =await findByPredio('null')
+async function changeSala(id, novaSala){
+    await Patrimonio.findOneAndUpdate({'_id':id}, {'sala':novaSala})
+}
 
-console.log(predios)
+async function changePredio(id, novoPredio){
+    await Patrimonio.findOneAndUpdate({'_id':id}, {'sala':novoPredio})
+}
+
+//changeSala('791140', 'novasala')
+
+//findById('791140')
+pat = findById('791140')
+pat.then(data => {
+    console.log(data)
+})
