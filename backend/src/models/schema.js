@@ -14,9 +14,4 @@ const patrimonioSchema = new Schema({
   serie: String
 })
 
-
-patrimonioSchema.methods.findById = function(id) {
-   return this.find({ id });
-};
-
 module.exports = mongoose.model('Patrimonio', patrimonioSchema)
