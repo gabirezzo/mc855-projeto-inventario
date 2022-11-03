@@ -1,23 +1,19 @@
 const express = require('express')
-const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+
 const app = express()
-const jsonParser = bodyParser.json()
 
-//mc855_db - user
-//grupoinventario - password
+const server = require('http').Server(app)
 
-// TODO: extrair conexão com banco para /backend/db/conn.js
 require('dotenv').config()
-const { MongoClient } = require('mongodb')
-const client = new MongoClient(process.env.ATLAS_URI)
-
-app.get('/', async (req, res) => {
-  await client.connect()
-  const db = client.db('test')
-  const collection = db.collection('patrimonios')
-  const results = await collection.find({}).toArray()
-  res.send(results)
+mongoose.connect(process.env.ATLAS_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 })
 
-// app.post('/', jsonParser, (req, res) => {})
-app.listen(3000)
+app.use(express.json())
+app.use(require('./router'))
+
+server.listen(3000, () => {
+  console.log(':) Server started on port 3000')
+})
