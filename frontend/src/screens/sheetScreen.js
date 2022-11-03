@@ -9,7 +9,6 @@ import { getData } from '../api/functions';
 let a = 45;
 
 export default function SheetScreen ({ navigation }) {
-    const [item, setItem] = useState({ title: '', image: '' });
     const [items, setItems] = useState([])
     const [obs, setObs] = useState('');
 
