@@ -15,15 +15,15 @@ export default function InventoryScreen({ route, navigation }) {
 
     const onPressRoom = (item) => {
         navigation.navigate("Room", { item });
-      };
+    };
 
     const { inventory_num, inventory_name } = route.params
 
     const renderRoom = ({ item }) => (
-        <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRoom(item)}>
+        <TouchableHighlight underlayColor="grey" onPress={() => onPressRoom(item)}>
           <View style={styles.container}>
             <Image style={styles.photo} source={AppIcon.images.classroom} />
-            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.title}>Sala 303</Text>
           </View>
         </TouchableHighlight>
       );
@@ -32,7 +32,7 @@ export default function InventoryScreen({ route, navigation }) {
 
         <View>
             <Text style={{ color: 'black' }}>Inventário {inventory_num} - {inventory_name}</Text>
-        <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={room_list} renderItem={renderRoom} keyExtractor={(item) => `${item.recipeId}`} />
+            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={room_list} renderItem={renderRoom} keyExtractor={(item) => `${item.recipeId}`} />
         </View>
     );
     
@@ -41,7 +41,7 @@ export default function InventoryScreen({ route, navigation }) {
 
 const numColums = 2;
 // item size
-const ITEM_HEIGHT = 150;
+const ITEM_HEIGHT = 180;
 const ITEM_MARGIN = 20;
 
 const styles = StyleSheet.create({
@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
       photo: {
         width: (SCREEN_WIDTH - (numColums + 1) * ITEM_MARGIN) / numColums,
         height: ITEM_HEIGHT,
-        borderRadius: 15,
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0
       },

@@ -63,7 +63,12 @@ export const AppIcon = {
     logo: require("../src/assets/icons/logo.png"),
     inventario: require("../src/assets/icons/inventory.png"),
     sala: require("../src/assets/icons/room.png"),
-    classroom: require("../src/assets/icons/classroom.png")
+    classroom: require("../src/assets/icons/classroom.png"),
+    confirma: require("../src/assets/icons/checked.png"),
+    fecha: require("../src/assets/icons/close.png"),
+    pergunta: require("../src/assets/icons/problem.png"),
+    scanner: require("../src/assets/icons/scanner.png")
+    
   }
 };
 

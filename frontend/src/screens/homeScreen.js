@@ -7,19 +7,6 @@ import {AppIcon} from '../AppStyles';
 
 export default function HomeScreen({ navigation }) {
     return (
-        // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        //     <Text style={{color: 'black'}}>Home Screen</Text>
-        //     <View
-        //         title="Planilha"
-        //         style={styles.btnClickContain}
-        //         onPress={() => navigation.navigate('Sheet')}
-        //     />
-        //     <View
-        //         title="Inventarios"
-        //         style={styles.btnClickContain}
-        //         onPress={() => navigation.navigate('InventoryList')}
-        //     />
-        // </View>
 
         <View style={styles.container}>
             <Text style={[styles.title]}>Seja bem vindo!</Text>
