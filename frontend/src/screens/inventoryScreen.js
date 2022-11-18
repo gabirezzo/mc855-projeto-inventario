@@ -1,49 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import { AppStyles } from '../AppStyles';
-import { AppIcon } from '../AppStyles';
-import { Button, StyleSheet, View, Text, TextInput } from 'react-native';
 
-create_roomList = (navigation, roomList) => {
-    rooms = []
-    for (let i = 0; i < roomList.length; i++) {
-        rooms.push(
-            <Button
-                title={'sala 3' + (roomList[i] * 10).toString()}
-                style={styles.btnClickContain}
-                onPress={() => navigation.navigate(
-                    'Room',
-                    {
-                        room_num: i,
-                        room_name: roomList[i]
-                    }
-                )}
-                key={i}
-            />
-        )
-    }
-    return rooms
-}
+import React, {useEffect, useState} from 'react';
+import {AppStyles} from '../AppStyles';
+import {AppIcon} from '../AppStyles';
+import { Button, StyleSheet, View, Text, TouchableHighlight, FlatList,  Dimensions, Image} from 'react-native';
+
+// orientation must fixed
+const { width, height } = Dimensions.get('window');
+const SCREEN_WIDTH = width < height ? width : height;
+
+const room_list = [1,2,3,4,5,6,7,8,9]
+
 
 export default function InventoryScreen({ route, navigation }) {
 
+    const onPressRoom = (item) => {
+        navigation.navigate("Room", { item });
+      };
+
     const { inventory_num, inventory_name } = route.params
 
-    const [roomList, setRoomList] = useState([])
-
-    const updateRoomList = (newRoomList) => setRoomList(newRoomList)
-
-    useEffect(() => {
-        updateRoomList([1,2,3,4,5])
-    }, [])
+    const renderRoom = ({ item }) => (
+        <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRoom(item)}>
+          <View style={styles.container}>
+            <Image style={styles.photo} source={AppIcon.images.classroom} />
+            <Text style={styles.title}>{item.title}</Text>
+          </View>
+        </TouchableHighlight>
+      );
 
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <TextInput title="email" />
+
+        <View>
             <Text style={{ color: 'black' }}>Inventário {inventory_num} - {inventory_name}</Text>
-            {this.create_roomList(navigation, roomList)}
+        <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={room_list} renderItem={renderRoom} keyExtractor={(item) => `${item.recipeId}`} />
         </View>
     );
+    
+
 }
+
+const numColums = 2;
+// item size
+const ITEM_HEIGHT = 150;
+const ITEM_MARGIN = 20;
 
 const styles = StyleSheet.create({
     btnClickContain: {
@@ -53,8 +52,41 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     btnContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+    },
+    container: {
         flex: 1,
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-    }
-});
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: ITEM_MARGIN,
+        marginTop: 20,
+        width: (SCREEN_WIDTH - (numColums + 1) * ITEM_MARGIN) / numColums,
+        height: ITEM_HEIGHT + 75,
+        borderColor: '#cccccc',
+        borderWidth: 0.5,
+        borderRadius: 15
+      },
+      photo: {
+        width: (SCREEN_WIDTH - (numColums + 1) * ITEM_MARGIN) / numColums,
+        height: ITEM_HEIGHT,
+        borderRadius: 15,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0
+      },
+      title: {
+        flex: 1,
+        fontSize: 17,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#444444',
+        marginTop: 3,
+        marginRight: 5,
+        marginLeft: 5,
+      },
+      category: {
+        marginTop: 5,
+        marginBottom: 5
+      }
+  });

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {AppStyles} from '../AppStyles';
 import {AppIcon} from '../AppStyles';
-import { Button, ScrollView, StyleSheet, View, Text } from 'react-native';
+import { Button, Pressable, ScrollView, StyleSheet, View, Text } from 'react-native';
 import {Configuration} from '../Configuration';
 
 
@@ -34,6 +34,10 @@ export default function InventoryListScreen({ navigation }) {
             <Text style={{color: 'black'}}>Inventário</Text>
                  {this.create_list(navigation)}
             </ScrollView>
+            <Pressable
+                style={styles.loginContainer}
+                onPress={() => navigation.navigate('Home')}>
+            </Pressable>
         </View>
     );
 }
@@ -54,7 +58,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flex: 1,
         padding: Configuration.home.listing_item.offset,
-      },
+    },
     title: {
         fontSize: AppStyles.fontSize.title,
         fontWeight: 'bold',
@@ -62,4 +66,4 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 20,
     }
-  });
+});

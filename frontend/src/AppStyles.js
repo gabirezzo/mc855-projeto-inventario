@@ -61,7 +61,9 @@ export const AppIcon = {
     // menu: require("../assets/icons/menu.png")
     planilha: require("../src/assets/icons/sheets.png"),
     logo: require("../src/assets/icons/logo.png"),
-    inventario: require("../src/assets/icons/inventory.png")
+    inventario: require("../src/assets/icons/inventory.png"),
+    sala: require("../src/assets/icons/room.png"),
+    classroom: require("../src/assets/icons/classroom.png")
   }
 };
 
