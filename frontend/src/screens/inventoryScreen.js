@@ -4,18 +4,51 @@ import {AppStyles} from '../AppStyles';
 import {AppIcon} from '../AppStyles';
 import { Button, StyleSheet, View, Text, TouchableHighlight, FlatList,  Dimensions, Image} from 'react-native';
 
+import { getData } from '../api/functions';
+
 // orientation must fixed
 const { width, height } = Dimensions.get('window');
-const SCREEN_WIDTH = width < height ? width : height;
-
-const room_list = [1,2,3,4,5,6,7,8,9]
-
+const SCREEN_WIDTH = width < height ? width : height; 
 
 export default function InventoryScreen({ route, navigation }) {
+    const [data, setData] = useState({})
+    const [roomList, setRoomList] = useState([])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log('ai mds q doido')
+            const result = await getData();
+            createRoomList(result['data'])
+        }
+        fetchData()
+    }, [])
 
     const onPressRoom = (item) => {
-        navigation.navigate("Room", { item });
+        navigation.navigate("Room", {
+            roomName: item
+        });
     };
+
+    const createRoomObj = (objList) => {
+        const tempData = {}
+        for(let i = 0; i < objList.length; i++){
+            tempData[i] = objList[i]
+        }
+        setData(tempData)
+    }
+
+    const createRoomList = (objList) => {
+        objList.forEach(extractRooms)
+        setRoomList(roomList.filter(onlyUnique))
+    }
+
+    const extractRooms = (roomObject) => {
+        roomList.push(roomObject['sala'])
+    }
+
+    function onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+      }
 
     const { inventory_num, inventory_name } = route.params
 
@@ -23,7 +56,7 @@ export default function InventoryScreen({ route, navigation }) {
         <TouchableHighlight underlayColor="grey" onPress={() => onPressRoom(item)}>
           <View style={styles.container}>
             <Image style={styles.photo} source={AppIcon.images.classroom} />
-            <Text style={styles.title}>Sala 303</Text>
+            <Text style={styles.title}>{item}</Text>
           </View>
         </TouchableHighlight>
       );
@@ -31,8 +64,8 @@ export default function InventoryScreen({ route, navigation }) {
     return (
 
         <View>
-            <Text style={{ color: 'black' }}>Inventário {inventory_num} - {inventory_name}</Text>
-            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={room_list} renderItem={renderRoom} keyExtractor={(item) => `${item.recipeId}`} />
+            <Text style={{ color: 'black' }}>{inventory_name}</Text>
+            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={roomList} renderItem={renderRoom} keyExtractor={(item) => `${item.recipeId}`} />
         </View>
     );
     
