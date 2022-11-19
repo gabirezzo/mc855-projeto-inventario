@@ -4,10 +4,10 @@ const mongoose = require('mongoose')
 
 const url = process.env.ATLAS_URI
 const file = reader.readFile('./tabelatest.xlsx')
-
+console.log('url = ' + url)
 //db path
-const url =
-  'mongodb+srv://adminventario:3jWCqzXW9kNbFh3j@cluster0.xobnfc9.mongodb.net/test?retryWrites=true&'
+//const url =
+//  'mongodb+srv://adminventario:3jWCqzXW9kNbFh3j@cluster0.xobnfc9.mongodb.net/inventario?retryWrites=true&'
 //'mongodb+srv://mc855_db:grupoinventario@cluster0.9pr1cy4.mongodb.net/?retryWrites=true&w=majority';
 
 //dbconn params
@@ -39,7 +39,7 @@ mongoose
   })
 
 //clear database before importing new table
-mongoose.connection.dropDatabase()
+//mongoose.connection.dropDatabase()
 
 //import model
 const Patrimonio = require('./models/schema.js')

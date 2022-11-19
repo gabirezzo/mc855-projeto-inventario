@@ -12,34 +12,40 @@ module.exports = {
     return res.json(patrimonio)
   },
 
-  async findByimovel(imovel) {
-    pat = await Patrimonio.find({ imovel: imovel })
-    return pat
+  async findByimovel(req, res) {
+    const imovel = req.params.imovel
+    patrimonio = await Patrimonio.find({ imovel: imovel })
+    return res.json(patrimonio)
   },
 
-  async findBylocalN1(localN1) {
-    pat = await Patrimonio.find({ localN1: localN1 })
-    return pat
+  async findBylocalN1(req, res) {
+    const localN1 = req.params.localN1
+    patrimonio = await Patrimonio.find({ localN1: localN1 })
+    return res.json(patrimonio)
   },
 
-  async findBylocalN2(localN2) {
-    pat = await Patrimonio.find({ localN2: localN2 })
-    return pat
+ async findBylocalN2(req, res) {
+    const localN2 = req.params.localN2
+    patrimonio = await Patrimonio.find({ localN2: localN2 })
+    return res.json(patrimonio)
   },
 
-  async findBylocalN3(localN3) {
-    pat = await Patrimonio.find({ localN3: localN3 })
-    return pat
+ async findBylocalN3(req, res) {
+    const localN3 = req.params.localN3
+    patrimonio = await Patrimonio.find({ localN3: localN3 })
+    return res.json(patrimonio)
   },
 
-  async findBylocalN4(localN4) {
-    pat = await Patrimonio.find({ localN4: localN4 })
-    return pat
-  },
+  async findBylocalN4(req, res) {
+     const localN4 = req.params.localN4
+     patrimonio = await Patrimonio.find({ localN4: localN4 })
+     return res.json(patrimonio)
+   },
 
-  async findBylocalN5(localN5) {
-      pat = await Patrimonio.find({ localN5: localN5 })
-      return pat
+ async findBylocalN5(req, res) {
+    const localN5 = req.params.localN5
+    patrimonio = await Patrimonio.find({ localN5: localN5 })
+    return res.json(patrimonio)
   },
 
 
@@ -66,17 +72,6 @@ module.exports = {
   async changeLocalN5(id, novoN5) {
     await Patrimonio.findOneAndUpdate({ _id: id }, { localN5: novoN5 })
 
-  async findByPredio(req, res) {
-    const predio = req.params.predio
-    patrimonio = await Patrimonio.find({ predio: predio })
-    return res.json(patrimonio)
-  },
-
-  async findBySala(req, res) {
-    const sala = req.params.sala
-    patrimonio = await Patrimonio.find({ sala: sala })
-    return res.json(patrimonio)
-  },
 
   async updatePatrimonio(req, res) {
     const id = req.params.id
@@ -93,8 +88,12 @@ module.exports = {
       { _id: id },
       {
         areaPatrimonio: area,
-        predio: predio,
-        sala: sala,
+        imovel: imovel,
+        localN1: localN1,
+        localN2: localN2,
+        localN3: localN3,
+        localN4: localN4,
+        localN5: localN5,
         tipo: tipo,
         descricao: descricao,
         marca: marca,
