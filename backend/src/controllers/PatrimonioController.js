@@ -12,21 +12,58 @@ module.exports = {
     return res.json(patrimonio)
   },
 
-  async findByPredio(predio) {
-    pat = await Patrimonio.find({ predio: predio })
+  async findByimovel(imovel) {
+    pat = await Patrimonio.find({ imovel: imovel })
     return pat
   },
 
-  async findBySala(sala) {
-    pat = await Patrimonio.find({ sala: sala })
+  async findBylocalN1(localN1) {
+    pat = await Patrimonio.find({ localN1: localN1 })
     return pat
   },
 
-  async changeSala(id, novaSala) {
-    await Patrimonio.findOneAndUpdate({ _id: id }, { sala: novaSala })
+  async findBylocalN2(localN2) {
+    pat = await Patrimonio.find({ localN2: localN2 })
+    return pat
   },
 
-  async changePredio(id, novoPredio) {
-    await Patrimonio.findOneAndUpdate({ _id: id }, { sala: novoPredio })
+  async findBylocalN3(localN3) {
+    pat = await Patrimonio.find({ localN3: localN3 })
+    return pat
+  },
+
+  async findBylocalN4(localN4) {
+    pat = await Patrimonio.find({ localN4: localN4 })
+    return pat
+  },
+
+  async findBylocalN5(localN5) {
+      pat = await Patrimonio.find({ localN5: localN5 })
+      return pat
+  },
+
+
+  async changeImovel(id, novoimovel) {
+    await Patrimonio.findOneAndUpdate({ _id: id }, { imovel: novoimovel })
+  },
+
+  async changeLocalN1(id, novoN1) {
+    await Patrimonio.findOneAndUpdate({ _id: id }, { localN1: novoN1 })
+  }
+
+  async changeLocalN2(id, novoN2) {
+    await Patrimonio.findOneAndUpdate({ _id: id }, { localN2: novoN2 })
+  }
+
+  async changeLocalN3(id, novoN3) {
+    await Patrimonio.findOneAndUpdate({ _id: id }, { localN3: novoN3 })
+  }
+
+  async changeLocalN4(id, novoN4) {
+    await Patrimonio.findOneAndUpdate({ _id: id }, { localN4: novoN4 })
+  }
+
+  async changeLocalN5(id, novoN5) {
+    await Patrimonio.findOneAndUpdate({ _id: id }, { localN5: novoN5 })
   }
 }

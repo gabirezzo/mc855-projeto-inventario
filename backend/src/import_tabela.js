@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const file = reader.readFile('./tabelatest.xlsx')
 //db path
 const url =
-  'mongodb+srv://adminventario:3jWCqzXW9kNbFh3j@cluster0.xobnfc9.mongodb.net/?retryWrites=true&w=majority'
+  'mongodb+srv://adminventario:3jWCqzXW9kNbFh3j@cluster0.xobnfc9.mongodb.net/test?retryWrites=true&'
 //'mongodb+srv://mc855_db:grupoinventario@cluster0.9pr1cy4.mongodb.net/?retryWrites=true&w=majority';
 
 //dbconn params
@@ -47,8 +47,12 @@ for (let i = 0; i < data.length; i++) {
   //criar variavel de patrimonio
   var pat = new Patrimonio({
     areaPatrimonio: data[i]['Área de Patrimônio'],
-    predio: 'null',
-    sala: 'null',
+    imovel: data[i]['imóvel'],
+    localN1: data[i]['Local N1'],
+    localN2: data[i]['Local N2'],
+    localN3: data[i]['Local N3'],
+    localN4: data[i]['Local N4'],
+    localN5: data[i]['Local N5'],
     tipo: data[i]['Tipo'],
     _id: data[i]['Identificador'],
     descricao: data[i]['Descrição'],
