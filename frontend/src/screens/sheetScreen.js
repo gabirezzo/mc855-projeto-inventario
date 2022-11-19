@@ -9,16 +9,17 @@ import { getData } from '../api/functions';
 let a = 45;
 
 export default function SheetScreen ({ navigation }) {
-    const [items, setItems] = useState([])
+    const [items, setItems] = useState({})
     const [obs, setObs] = useState('');
 
     const onclickHandler = async () => {
         // e.preventDefault();
-        console.log('1 meu deus')
         const result = await getData();
-        console.log('2 meu deus')
-        setItems([...items, result]);
-        console.log(items)
+        // console.log(result['data'])
+        console.log(result['data'][0]['sala'])
+        // console.log(result['data'][0]['sala'])
+        // setItems(result);
+        // console.log(JSON.stringify(items))
     }
 
     // useEffect(() => {

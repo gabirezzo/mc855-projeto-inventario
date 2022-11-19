@@ -65,5 +65,44 @@ module.exports = {
 
   async changeLocalN5(id, novoN5) {
     await Patrimonio.findOneAndUpdate({ _id: id }, { localN5: novoN5 })
+
+  async findByPredio(req, res) {
+    const predio = req.params.predio
+    patrimonio = await Patrimonio.find({ predio: predio })
+    return res.json(patrimonio)
+  },
+
+  async findBySala(req, res) {
+    const sala = req.params.sala
+    patrimonio = await Patrimonio.find({ sala: sala })
+    return res.json(patrimonio)
+  },
+
+  async updatePatrimonio(req, res) {
+    const id = req.params.id
+    const area = req.body.areaPatrimonio
+    const predio = req.body.predio
+    const sala = req.body.sala
+    const tipo = req.body.tipo
+    const descricao = req.body.descricao
+    const marca = req.body.marca
+    const modelo = req.body.modelo
+    const serie = req.body.serie
+
+    await Patrimonio.findOneAndUpdate(
+      { _id: id },
+      {
+        areaPatrimonio: area,
+        predio: predio,
+        sala: sala,
+        tipo: tipo,
+        descricao: descricao,
+        marca: marca,
+        modelo: modelo,
+        serie: serie
+      }
+    )
+    patrimonio = await Patrimonio.find({ _id: id })
+    return res.json(patrimonio)
   }
 }
