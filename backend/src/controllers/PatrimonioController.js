@@ -35,7 +35,7 @@ module.exports = {
     const modelo = req.body.modelo
     const serie = req.body.serie
 
-    patrimonio = await Patrimonio.findOneAndUpdate(
+    await Patrimonio.findOneAndUpdate(
       { _id: id },
       {
         areaPatrimonio: area,
@@ -48,6 +48,7 @@ module.exports = {
         serie: serie
       }
     )
+    patrimonio = await Patrimonio.find({ _id: id })
     return res.json(patrimonio)
   }
 }
