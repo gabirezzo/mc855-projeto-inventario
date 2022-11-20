@@ -6,10 +6,14 @@ import { getData } from '../api/functions';
 
 import EventEmitter from './EventEmitter';
 
+import DialogInput from 'react-native-dialog-input';
+
 
 
 export default function ItemScreen ({ route, navigation }) {
     const [item, setItem] = useState({})
+
+    const [isDialogVisible, showDialog] = useState(false)
 
     const { itemId, roomId } = route.params
 
@@ -39,6 +43,17 @@ export default function ItemScreen ({ route, navigation }) {
         navigation.goBack()
     }
 
+    const handleRedBtn = () => {
+        showDialog(true)
+    }
+
+    const handleMoveItem = (roomInput) => {
+        EventEmitter.notify('OnInventoryItemMove', roomInput, itemId, roomId)
+        EventEmitter.notify('OnItemMove', itemId)
+        showDialog(false)
+        navigation.goBack()
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.IconContainer}>
@@ -56,10 +71,20 @@ export default function ItemScreen ({ route, navigation }) {
             <View style={styles.IconContainer}>
                 <Pressable
                 style={styles.loginContainer}
-                onPress={() => navigation.navigate('')}>
+                onPress={() => handleRedBtn()}>
                 <Image source={AppIcon.images.fecha} style={styles.btnIcon} />
                 </Pressable>
             </View>
+
+            <DialogInput isDialogVisible={isDialogVisible}
+                title={"Mover patrimônio"}
+                message={"Digite a sala para mover o patrimônoio"}
+                hintInput ={"SALA 30"}
+                submitInput={ (inputText) => handleMoveItem(inputText) }
+                closeDialog={ () => {showDialog(false)}}
+                style = {styles.title}>
+</DialogInput>
+
         </View>
     );
 }

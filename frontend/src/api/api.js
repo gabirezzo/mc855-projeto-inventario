@@ -8,6 +8,6 @@ export const findBylocalN2 = (idLocalN2) => axios.get(url + 'patrimonios/sala/' 
 
 export const findById = (idItem) => axios.get(url + 'patrimonios/' + idItem);
 
-
+export const updatePatrimonio = (idItem, itemBody) => axios.put(url + 'patrimonios/' + idItem, itemBody);
 // export const createItem = (item)=>axios.post(url,item);
 

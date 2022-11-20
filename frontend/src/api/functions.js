@@ -27,6 +27,15 @@ export const findById = async (idItem) => {
     }
 }
 
+export const updatePatrimonio = async (idItem, itemBody) => {
+    try {
+        const data = await api.updatePatrimonio(idItem, itemBody);
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 // export const sendData = async (todo) => {
 //     try {
 //         const {

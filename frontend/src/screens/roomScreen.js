@@ -22,32 +22,55 @@ export default function RoomScreen ({ route, navigation }) {
     
     const [dummy, setDummy] = useState(0)
 
-    const { roomName } = route.params
+    const { roomName, firstVisit, confirmedItems, unconfirmedItems } = route.params
 
     let tempList = []
 
     useEffect(() => {
         const fetchData = async () => {
             const result = await getData();
-            createItemsList(result['data'])
+            console.log(firstVisit)
+            if(firstVisit){
+                createItemsList(result['data'])
+            }
+            else{
+                setItems({
+                    confirmedItems: confirmedItems,
+                    unconfirmedItems: unconfirmedItems
+                })
+            }
         }
 
         const updateConfirmedItems = (itemId) => {
             setDummy(dummy+1)
-            let confirmedItems = items['confirmedItems']
-            confirmedItems.push(itemId)
+            let tempConfirmedItems = items['confirmedItems']
+            tempConfirmedItems.push(itemId)
 
             const index = items['unconfirmedItems'].indexOf(itemId)
-            let unconfirmedItems = items['unconfirmedItems']
+            let tempUnconfirmedItems = items['unconfirmedItems']
 
-            unconfirmedItems.splice(index, 1);
+            tempUnconfirmedItems.splice(index, 1);
 
             setItems({
-                confirmedItems: confirmedItems,
-                unconfirmedItems: unconfirmedItems
+                confirmedItems: tempConfirmedItems,
+                unconfirmedItems: tempUnconfirmedItems
             })
 
-            EventEmitter.notify('OnInventoryItemConfirm', roomName, confirmedItems, unconfirmedItems)
+            EventEmitter.notify('OnInventoryItemConfirm', roomName, tempConfirmedItems, tempUnconfirmedItems)
+        }
+
+        const updateItemMoved = (itemId) => {
+            setDummy(dummy+1)
+            
+            const index = items['unconfirmedItems'].indexOf(itemId)
+            let tempUnconfirmedItems2 = items['unconfirmedItems']
+
+            tempUnconfirmedItems2.splice(index, 1);
+
+            setItems({
+                confirmedItems: items['confirmedItems'],
+                unconfirmedItems: tempUnconfirmedItems2
+            })
         }
 
         if(loadItems) {
@@ -56,6 +79,7 @@ export default function RoomScreen ({ route, navigation }) {
         }
 
         EventEmitter.addListener("OnItemConfirm", updateConfirmedItems)
+        EventEmitter.addListener("OnItemMove", updateItemMoved)
 
         return () => {
             EventEmitter.removeListener("OnItemConfirm", updateConfirmedItems)
@@ -85,7 +109,7 @@ export default function RoomScreen ({ route, navigation }) {
     };
 
     const handleButton = (itemId) => {
-        setDummy(dummy+1)
+        console.log(items)
     }
 
     const renderItems = ({ item }) => (

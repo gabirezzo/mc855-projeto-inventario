@@ -6,7 +6,7 @@ import { Button, StyleSheet, View, Text, TouchableHighlight, FlatList,  Dimensio
 
 import EventEmitter from './EventEmitter';
 
-import { getData } from '../api/functions';
+import { getData, updatePatrimonio, findById } from '../api/functions';
 
 // orientation must fixed
 const { width, height } = Dimensions.get('window');
@@ -15,12 +15,16 @@ const SCREEN_WIDTH = width < height ? width : height;
 export default function InventoryScreen({ route, navigation }) {
     const [roomList, setRoomList] = useState([])
 
+    const [missingRooms, setMissingRooms] = useState([])
+
     const [items, setItems] = useState({
         inventoryConfirmedItems: {},
         inventoryUnconfirmedItems: {}
     })
 
     const [loadItems, setLoadItems] = useState(true)
+
+    const [movedItems, setMovedItems] = useState([])
 
     const [dummy, setDummy] = useState(0)
 
@@ -44,28 +48,46 @@ export default function InventoryScreen({ route, navigation }) {
             tempItems['inventoryConfirmedItems'][room] = confirmedItems
             tempItems['inventoryUnconfirmedItems'][room] = unconfirmedItems
 
+            const index = missingRooms.indexOf(room)
+            let tempMissingRooms = missingRooms
+
+            tempMissingRooms.splice(index, 1);
+
 
             setItems(tempItems)  
-            
-            console.log(items)
+            setMissingRooms(tempMissingRooms)
+        }
+
+        const updateMoveItems = (roomInput, itemId, roomId) => {
+
+            let tempMovedItems = movedItems
+            tempMovedItems.push({
+                item: itemId,
+                salaAntiga: roomId,
+                salaNova: roomInput
+            })
+
+            setMovedItems(tempMovedItems)
+
+            setDummy(dummy+1)
         }
 
         EventEmitter.addListener("OnInventoryItemConfirm", updateInventoryConfirmedItems)
+        EventEmitter.addListener("OnInventoryItemMove", updateMoveItems)
 
-        if(loadItems) {
-            fetchData()
-            setLoadItems(false)
-        }
+        fetchData()
 
         return () => {
             EventEmitter.removeListener("OnInventoryItemConfirm", updateInventoryConfirmedItems)
+            EventEmitter.removeListener("OnInventoryItemMove", updateMoveItems)
         }
     }, [])
 
-
+    // Cria listas de salas
     const createRoomList = (objList) => {
         objList.forEach(extractRooms)
         setRoomList(roomList.filter(onlyUnique))
+        setMissingRooms(roomList.filter(onlyUnique))
     }
 
     const extractRooms = (roomObject) => {
@@ -75,24 +97,48 @@ export default function InventoryScreen({ route, navigation }) {
     function onlyUnique(value, index, self) {
         return self.indexOf(value) === index;
     }
-
-    const extractItem = (itemObj) => {
-        tempList.push(itemObj['_id'])
-    }
-
-    const createItemsList = (objList) => {
-        objList.forEach(extractItem)
-    }
     
+    // Clica no botão
     const onPressRoom = (item) => {
         setDummy(dummy+1)
+        const index = missingRooms.indexOf(item)
+        const firstVisit = index != -1
         navigation.navigate("Room", {
-            roomName: item
+            roomName: item, 
+            firstVisit: firstVisit,
+            confirmedItems: items['inventoryConfirmedItems'][item],
+            unconfirmedItems: items['inventoryUnconfirmedItems'][item]
         });
     };
 
+
+
     const handleButton = () => {
-        console.log(items)
+        console.log(handleGerarRelatorio())
+    }
+
+    const handleGerarRelatorio = () => {
+        let msg = "Movimentações realizadas:\n"
+        for(let i = 0; i < movedItems.length; i++) {
+            msg += "\tId patrimônio: " + movedItems[i]['item'] + "\n"
+            msg += "\tSala antiga: " + movedItems[i]['salaAntiga'] + "\n"
+            msg += "\tSala Nova: " + movedItems[i]['salaNova'] + "\n"
+        }
+
+        msg += "\nPatrimônios não encontrados:\n"
+
+        for(const sala in items['inventoryUnconfirmedItems']) {
+
+            msg += "Sala: "+ sala + "\n"
+            for(let i = 0; i < items['inventoryUnconfirmedItems'][sala].length; i++) {
+                msg += "\t" + items['inventoryUnconfirmedItems'][sala][i] + "\n"
+
+            }
+
+            msg += "\n"
+        }
+
+        return msg
     }
 
     const { inventory_num, inventory_name } = route.params
