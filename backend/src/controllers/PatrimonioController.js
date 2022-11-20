@@ -7,8 +7,8 @@ module.exports = {
   },
 
   async findById(req, res) {
-    const patrimonioId = req.params.patrimonioId
-    patrimonio = await Patrimonio.find({ _id: patrimonioId })
+    const id = req.params.id
+    patrimonio = await Patrimonio.find({ _id: id })
     return res.json(patrimonio)
   },
 
@@ -37,9 +37,9 @@ module.exports = {
   },
 
   async findBylocalN4(req, res) {
-     const localN4 = req.params.localN4
-     patrimonio = await Patrimonio.find({ localN4: localN4 })
-     return res.json(patrimonio)
+    const localN4 = req.params.localN4
+    patrimonio = await Patrimonio.find({ localN4: localN4 })
+    return res.json(patrimonio)
   },
 
   async findBylocalN5(req, res) {
@@ -71,7 +71,6 @@ module.exports = {
   async changeLocalN5(id, novoN5) {
     await Patrimonio.findOneAndUpdate({ _id: id }, { localN5: novoN5 })
   },
-
 
   async updatePatrimonio(req, res) {
     const id = req.params.id
