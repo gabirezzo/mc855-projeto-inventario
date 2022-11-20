@@ -4,6 +4,9 @@ import {AppIcon} from '../AppStyles';
 import {StyleSheet, View, Text , Pressable, Image } from 'react-native';
 import { getData } from '../api/functions';
 
+import EventEmitter from './EventEmitter';
+
+
 
 export default function ItemScreen ({ route, navigation }) {
     const [item, setItem] = useState({})
@@ -14,10 +17,8 @@ export default function ItemScreen ({ route, navigation }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log(itemId)
             const result = await getData();
             createItem(result['data'])
-            console.log(item)
         }
         fetchData()
     }, [])
@@ -33,6 +34,11 @@ export default function ItemScreen ({ route, navigation }) {
         }
     }
 
+    const handleConfirmItem = () => {
+        EventEmitter.notify('OnItemConfirm', itemId)
+        navigation.goBack()
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.IconContainer}>
@@ -42,7 +48,7 @@ export default function ItemScreen ({ route, navigation }) {
                 <Text style={styles.title}>predio: {item['predio']}</Text>
                 <Pressable
                 style={styles.loginContainer}
-                onPress={() => navigation.navigate('')}>
+                onPress={() => handleConfirmItem()}>
                 <Image source={AppIcon.images.confirma}style={styles.btnIcon} />
                 </Pressable>
             </View>

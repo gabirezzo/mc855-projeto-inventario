@@ -5,26 +5,70 @@ import { Button, StyleSheet, View, Text, TouchableHighlight, FlatList,  Dimensio
 
 import { getData } from '../api/functions';
 
+import EventEmitter from './EventEmitter';
+
 // orientation must fixed
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width < height ? width : height; 
 
 
 export default function RoomScreen ({ route, navigation }) {
-    // const [data, setData] = useState([]) // lista com objetos de patrimonios dessa sala
-    const [itemsList, setItemsList] = useState([]) // lista com os ids dos patrimonios dessa sala
+    // const [confirmedItems, setConfirmedItems] = useState([])
+    // const [unconfirmedItems, setUnConfirmedItems] = useState([]) // lista com os ids dos patrimonios dessa sala
+
+    const [items, setItems] = useState({
+        confirmedItems: [],
+        unconfirmedItems: []
+    })
+
+    const [dummy, setDummy] = useState(0)
+
+    const [loadItems, setLoadItems] = useState(true)
 
     const { roomName } = route.params
 
-    const tempList = []
+    let tempList = []
 
     useEffect(() => {
         const fetchData = async () => {
             const result = await getData();
             createItemsList(result['data'])
         }
-        fetchData()
-    }, [])
+        const updateConfirmedItems = (itemId) => {
+            setDummy(dummy+1)
+            let confirmedItems = items['confirmedItems']
+            console.log('confirmedItems state:', items['confirmedItems'])
+            console.log('confirmedItems:', confirmedItems)
+            confirmedItems.push(itemId)
+
+            const index = items['unconfirmedItems'].indexOf(itemId)
+            let unconfirmedItems = items['unconfirmedItems']
+
+            console.log('unconfirmedItems state:', items['unconfirmedItems'])
+            console.log('unconfirmedItems:', unconfirmedItems)
+
+            unconfirmedItems.splice(index, 1);
+
+            console.log('unconfirmedItems spliced:', unconfirmedItems)
+
+            setItems({
+                confirmedItems: confirmedItems,
+                unconfirmedItems: unconfirmedItems
+            })
+        }
+        if(loadItems) {
+            fetchData()
+            setLoadItems(false)
+        }
+        EventEmitter.addListener("OnItemConfirm", updateConfirmedItems)
+
+        console.log('confirmedItems mount: ', items['confirmedItems'])
+        console.log('unconfirmedItems mount: ', items['unconfirmedItems'])
+
+        return () => {
+            EventEmitter.removeListener("OnItemConfirm", updateConfirmedItems)
+        }
+    }, [dummy])
 
     // const getRoomItems = (objList) => {
     //     const tempData = []
@@ -41,19 +85,30 @@ export default function RoomScreen ({ route, navigation }) {
     const extractItem = (itemObj) => {
         if(itemObj['sala'] == roomName) {
             tempList.push(itemObj['_id'])
+        }
     }
-}
 
     const createItemsList = (objList) => {
         objList.forEach(extractItem)
-        setItemsList(tempList)
+        setItems({
+            confirmedItems: items['confirmedItems'],
+            unconfirmedItems: tempList
+        })
+        // setUnConfirmedItems(tempList)
     }
 
     const onPressItem = (item) => {
+        setDummy(dummy+1)
         navigation.navigate("Item", {
             itemId: item
         });
     };
+
+    const handleButton = (itemId) => {
+        console.log('confirmedItems: ', items['confirmedItems'])
+        console.log('unconfirmedItems: ', items['unconfirmedItems'])
+        setDummy(dummy+1)
+    }
 
     const renderItems = ({ item }) => (
         <TouchableHighlight underlayColor="grey" onPress={() => onPressItem(item)}>
@@ -64,11 +119,28 @@ export default function RoomScreen ({ route, navigation }) {
         </TouchableHighlight>
       );
 
+      const renderItemsConfirmed = ({ item }) => (
+        <TouchableHighlight underlayColor="green" onPress={() => {}}>
+          <View style={styles.container}>
+            <Image style={styles.photo} source={AppIcon.images.classroom} />
+            <Text style={styles.title}>{item}</Text>
+          </View>
+        </TouchableHighlight>
+      );
+
     return (
         <View>
+            <Button
+                title='teste'
+                onPress={() => handleButton('790988')}
+            />
             <Text style={{ color: 'black' }}>Sala {roomName}</Text>
-            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={itemsList} renderItem={renderItems} keyExtractor={(item) => `${item.recipeId}`} />
+            <Text style={{ color: 'black' }}>Não confirmados</Text>
+            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={items['unconfirmedItems']} renderItem={renderItems} keyExtractor={(item) => `${item.recipeId}`} />
+            <Text style={{ color: 'black' }}>Confirmados</Text>
+            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={items['confirmedItems']} renderItem={renderItemsConfirmed} keyExtractor={(item) => `${item.recipeId}`} />
         </View>
+        
 
     );
 }
