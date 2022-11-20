@@ -16,8 +16,8 @@ export default function InventoryScreen({ route, navigation }) {
     const [roomList, setRoomList] = useState([])
 
     const [items, setItems] = useState({
-        inventoryConfirmedItems: [],
-        inventoryUnconfirmedItems: []
+        inventoryConfirmedItems: {},
+        inventoryUnconfirmedItems: {}
     })
 
     const [loadItems, setLoadItems] = useState(true)
@@ -32,27 +32,20 @@ export default function InventoryScreen({ route, navigation }) {
             
             const result = await getData();
             createRoomList(result['data'])
-            createItemsList(result['data'])
+            // createItemsList(result['data'])
 
         }
 
-        const updateInventoryConfirmedItems = (itemId) => {
+        const updateInventoryConfirmedItems = (room, confirmedItems, unconfirmedItems) => {
             setDummy(dummy+1)
 
-            let inventoryConfirmedItems = items['inventoryConfirmedItems']
-            inventoryConfirmedItems.push(itemId)
+            tempItems = items
 
-            const index = items['inventoryUnconfirmedItems'].indexOf(itemId)
-            let inventoryUnconfirmedItems = items['inventoryUnconfirmedItems']
+            tempItems['inventoryConfirmedItems'][room] = confirmedItems
+            tempItems['inventoryUnconfirmedItems'][room] = unconfirmedItems
 
-            inventoryUnconfirmedItems.splice(index, 1);
 
-            console.log('inventoryUnconfirmedItems', inventoryUnconfirmedItems)
-
-            setItems({
-                inventoryConfirmedItems: inventoryConfirmedItems,
-                inventoryUnconfirmedItems: inventoryUnconfirmedItems
-            })  
+            setItems(tempItems)  
             
             console.log(items)
         }
@@ -89,10 +82,6 @@ export default function InventoryScreen({ route, navigation }) {
 
     const createItemsList = (objList) => {
         objList.forEach(extractItem)
-        setItems({
-            confirmedItems: items['inventoryConfirmedItems'],
-            unconfirmedItems: tempList
-        })
     }
     
     const onPressRoom = (item) => {
@@ -103,7 +92,7 @@ export default function InventoryScreen({ route, navigation }) {
     };
 
     const handleButton = () => {
-        console.log(roomList)
+        console.log(items)
     }
 
     const { inventory_num, inventory_name } = route.params

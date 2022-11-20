@@ -36,7 +36,6 @@ export default function ItemScreen ({ route, navigation }) {
 
     const handleConfirmItem = () => {
         EventEmitter.notify('OnItemConfirm', itemId)
-        EventEmitter.notify('OnInventoryItemConfirm', itemId)
         navigation.goBack()
     }
 

@@ -46,6 +46,8 @@ export default function RoomScreen ({ route, navigation }) {
                 confirmedItems: confirmedItems,
                 unconfirmedItems: unconfirmedItems
             })
+
+            EventEmitter.notify('OnInventoryItemConfirm', roomName, confirmedItems, unconfirmedItems)
         }
 
         if(loadItems) {
