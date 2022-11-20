@@ -13,30 +13,60 @@ const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width < height ? width : height; 
 
 export default function InventoryScreen({ route, navigation }) {
-    const [data, setData] = useState({})
     const [roomList, setRoomList] = useState([])
-    const [confirmedItems, setConfirmedItems] = useState([])
+
+    const [items, setItems] = useState({
+        inventoryConfirmedItems: [],
+        inventoryUnconfirmedItems: []
+    })
+
+    const [loadItems, setLoadItems] = useState(true)
+
+    const [dummy, setDummy] = useState(0)
+
+    let tempList = []
+
 
     useEffect(() => {
         const fetchData = async () => {
             
             const result = await getData();
             createRoomList(result['data'])
+            createItemsList(result['data'])
 
         }
-        // const updateConfirmedItems = (itemId) => {
-        //     tempList = confirmedItems
-        //     tempList.push(itemId)
-        //     setConfirmedItems(tempList)
-        //     console.log(tempList)
-        // }
-        // EventEmitter.addListener("OnItemConfirm", updateConfirmedItems)
 
-        fetchData()
+        const updateInventoryConfirmedItems = (itemId) => {
+            setDummy(dummy+1)
 
-        // return () => {
-        //     EventEmitter.removeListener("OnItemConfirm", updateConfirmedItems)
-        // }
+            let inventoryConfirmedItems = items['inventoryConfirmedItems']
+            inventoryConfirmedItems.push(itemId)
+
+            const index = items['inventoryUnconfirmedItems'].indexOf(itemId)
+            let inventoryUnconfirmedItems = items['inventoryUnconfirmedItems']
+
+            inventoryUnconfirmedItems.splice(index, 1);
+
+            console.log('inventoryUnconfirmedItems', inventoryUnconfirmedItems)
+
+            setItems({
+                inventoryConfirmedItems: inventoryConfirmedItems,
+                inventoryUnconfirmedItems: inventoryUnconfirmedItems
+            })  
+            
+            console.log(items)
+        }
+
+        EventEmitter.addListener("OnInventoryItemConfirm", updateInventoryConfirmedItems)
+
+        if(loadItems) {
+            fetchData()
+            setLoadItems(false)
+        }
+
+        return () => {
+            EventEmitter.removeListener("OnInventoryItemConfirm", updateInventoryConfirmedItems)
+        }
     }, [])
 
 
@@ -46,21 +76,34 @@ export default function InventoryScreen({ route, navigation }) {
     }
 
     const extractRooms = (roomObject) => {
-        roomList.push(roomObject['sala'])
+        roomList.push(roomObject['localN2'])
     }
 
     function onlyUnique(value, index, self) {
         return self.indexOf(value) === index;
     }
+
+    const extractItem = (itemObj) => {
+        tempList.push(itemObj['_id'])
+    }
+
+    const createItemsList = (objList) => {
+        objList.forEach(extractItem)
+        setItems({
+            confirmedItems: items['inventoryConfirmedItems'],
+            unconfirmedItems: tempList
+        })
+    }
     
     const onPressRoom = (item) => {
+        setDummy(dummy+1)
         navigation.navigate("Room", {
             roomName: item
         });
     };
 
     const handleButton = () => {
-        console.log(confirmedItems)
+        console.log(roomList)
     }
 
     const { inventory_num, inventory_name } = route.params

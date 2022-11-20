@@ -9,6 +9,24 @@ export const getData = async () => {
     }
 }
 
+export const findBylocalN2 = async (idLocalN2) => {
+    try {
+        const data = await api.findBylocalN2(idLocalN2);
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const findById = async (idItem) => {
+    try {
+        const data = await api.findById(idItem);
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 // export const sendData = async (todo) => {
 //     try {
 //         const {

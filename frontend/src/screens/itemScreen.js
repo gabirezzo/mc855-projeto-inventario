@@ -11,7 +11,7 @@ import EventEmitter from './EventEmitter';
 export default function ItemScreen ({ route, navigation }) {
     const [item, setItem] = useState({})
 
-    const { itemId } = route.params
+    const { itemId, roomId } = route.params
 
     let tempItem = {}
 
@@ -36,6 +36,7 @@ export default function ItemScreen ({ route, navigation }) {
 
     const handleConfirmItem = () => {
         EventEmitter.notify('OnItemConfirm', itemId)
+        EventEmitter.notify('OnInventoryItemConfirm', itemId)
         navigation.goBack()
     }
 
