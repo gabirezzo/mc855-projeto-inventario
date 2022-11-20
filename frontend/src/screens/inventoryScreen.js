@@ -4,6 +4,8 @@ import {AppStyles} from '../AppStyles';
 import {AppIcon} from '../AppStyles';
 import { Button, StyleSheet, View, Text, TouchableHighlight, FlatList,  Dimensions, Image} from 'react-native';
 
+import EventEmitter from './EventEmitter';
+
 import { getData } from '../api/functions';
 
 // orientation must fixed
@@ -13,29 +15,30 @@ const SCREEN_WIDTH = width < height ? width : height;
 export default function InventoryScreen({ route, navigation }) {
     const [data, setData] = useState({})
     const [roomList, setRoomList] = useState([])
+    const [confirmedItems, setConfirmedItems] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log('ai mds q doido')
+            
             const result = await getData();
             createRoomList(result['data'])
+
         }
+        // const updateConfirmedItems = (itemId) => {
+        //     tempList = confirmedItems
+        //     tempList.push(itemId)
+        //     setConfirmedItems(tempList)
+        //     console.log(tempList)
+        // }
+        // EventEmitter.addListener("OnItemConfirm", updateConfirmedItems)
+
         fetchData()
+
+        // return () => {
+        //     EventEmitter.removeListener("OnItemConfirm", updateConfirmedItems)
+        // }
     }, [])
 
-    const onPressRoom = (item) => {
-        navigation.navigate("Room", {
-            roomName: item
-        });
-    };
-
-    const createRoomObj = (objList) => {
-        const tempData = {}
-        for(let i = 0; i < objList.length; i++){
-            tempData[i] = objList[i]
-        }
-        setData(tempData)
-    }
 
     const createRoomList = (objList) => {
         objList.forEach(extractRooms)
@@ -48,7 +51,17 @@ export default function InventoryScreen({ route, navigation }) {
 
     function onlyUnique(value, index, self) {
         return self.indexOf(value) === index;
-      }
+    }
+    
+    const onPressRoom = (item) => {
+        navigation.navigate("Room", {
+            roomName: item
+        });
+    };
+
+    const handleButton = () => {
+        console.log(confirmedItems)
+    }
 
     const { inventory_num, inventory_name } = route.params
 
@@ -65,6 +78,10 @@ export default function InventoryScreen({ route, navigation }) {
 
         <View>
             <Text style={{ color: 'black' }}>{inventory_name}</Text>
+            <Button
+                title='teste'
+                onPress={() => handleButton()}
+            />
             <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={roomList} renderItem={renderRoom} keyExtractor={(item) => `${item.recipeId}`} />
         </View>
     );
