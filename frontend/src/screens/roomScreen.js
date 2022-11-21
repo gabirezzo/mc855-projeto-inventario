@@ -13,69 +13,59 @@ const SCREEN_WIDTH = width < height ? width : height;
 
 
 export default function RoomScreen ({ route, navigation }) {
-    const [items, setItems] = useState({
-        confirmedItems: [],
-        unconfirmedItems: []
-    })
-
-    const [loadItems, setLoadItems] = useState(true)
     
     const [dummy, setDummy] = useState(0)
+    
+    const { items, roomName, roomList } = route.params
 
-    const { roomName, firstVisit, confirmedItems, unconfirmedItems } = route.params
-
-    let tempList = []
+    const [roomItems, setRoomItems] = useState(items)
 
     useEffect(() => {
-        const fetchData = async () => {
-            const result = await getData();
-            console.log(firstVisit)
-            if(firstVisit){
-                createItemsList(result['data'])
-            }
-            else{
-                setItems({
-                    confirmedItems: confirmedItems,
-                    unconfirmedItems: unconfirmedItems
-                })
-            }
-        }
-
         const updateConfirmedItems = (itemId) => {
             setDummy(dummy+1)
-            let tempConfirmedItems = items['confirmedItems']
+            let tempConfirmedItems = roomItems['confirmedItems']
             tempConfirmedItems.push(itemId)
 
-            const index = items['unconfirmedItems'].indexOf(itemId)
-            let tempUnconfirmedItems = items['unconfirmedItems']
+            const index = roomItems['unconfirmedItems'].indexOf(itemId)
+            let tempUnconfirmedItems = roomItems['unconfirmedItems']
 
-            tempUnconfirmedItems.splice(index, 1);
+            if(index != -1){
+                tempUnconfirmedItems.splice(index, 1);
+            }
 
-            setItems({
+            setRoomItems({
                 confirmedItems: tempConfirmedItems,
                 unconfirmedItems: tempUnconfirmedItems
             })
-
-            EventEmitter.notify('OnInventoryItemConfirm', roomName, tempConfirmedItems, tempUnconfirmedItems)
         }
 
-        const updateItemMoved = (itemId) => {
-            setDummy(dummy+1)
+        const updateItemMoved = (itemId, prevRoomId, newRoomId) => {
+            if(!newRoomId.startsWith('SALA')) {
+                newRoomId = 'SALA - ' + newRoomId
+            }
+
+            if(roomList.includes(newRoomId)) {
+                let tempConfirmedItems = roomItems['confirmedItems']
             
-            const index = items['unconfirmedItems'].indexOf(itemId)
-            let tempUnconfirmedItems2 = items['unconfirmedItems']
+                const index = items['unconfirmedItems'].indexOf(itemId)
+                let tempUnconfirmedItems = items['unconfirmedItems']
 
-            tempUnconfirmedItems2.splice(index, 1);
+                if(index != -1){
+                    tempUnconfirmedItems.splice(index, 1);
+                }
 
-            setItems({
-                confirmedItems: items['confirmedItems'],
-                unconfirmedItems: tempUnconfirmedItems2
-            })
-        }
+                setRoomItems({
+                    confirmedItems: tempConfirmedItems,
+                    unconfirmedItems: tempUnconfirmedItems
+                })
 
-        if(loadItems) {
-            fetchData()
-            setLoadItems(false)
+                EventEmitter.notify('OnInventoryItemMove', itemId, prevRoomId, newRoomId)
+            }
+            else {
+                console.log('Essa sala não existe')
+            }
+
+            
         }
 
         EventEmitter.addListener("OnItemConfirm", updateConfirmedItems)
@@ -83,24 +73,11 @@ export default function RoomScreen ({ route, navigation }) {
 
         return () => {
             EventEmitter.removeListener("OnItemConfirm", updateConfirmedItems)
+            EventEmitter.removeListener("OnItemMove", updateItemMoved)
         }
-    }, [dummy])
+    })
 
-    const extractItem = (itemObj) => {
-        if(itemObj['localN2'] == roomName) {
-            tempList.push(itemObj['_id'])
-        }
-    }
-
-    const createItemsList = (objList) => {
-        objList.forEach(extractItem)
-        setItems({
-            confirmedItems: items['confirmedItems'],
-            unconfirmedItems: tempList
-        })
-    }
-
-    const onPressItem = (item) => {
+    const onPressUnconfirmed = (item) => {
         setDummy(dummy+1)
         navigation.navigate("Item", {
             itemId: item,
@@ -109,11 +86,11 @@ export default function RoomScreen ({ route, navigation }) {
     };
 
     const handleButton = (itemId) => {
-        console.log(items)
+        console.log(roomItems)
     }
 
-    const renderItems = ({ item }) => (
-        <TouchableHighlight underlayColor="grey" onPress={() => onPressItem(item)}>
+    const renderUnconfirmedItems = ({ item }) => (
+        <TouchableHighlight underlayColor="grey" onPress={() => onPressUnconfirmed(item)}>
           <View style={styles.container}>
             <Image style={styles.photo} source={AppIcon.images.classroom} />
             <Text style={styles.title}>{item}</Text>
@@ -121,7 +98,7 @@ export default function RoomScreen ({ route, navigation }) {
         </TouchableHighlight>
       );
 
-      const renderItemsConfirmed = ({ item }) => (
+      const renderConfirmedItems = ({ item }) => (
         <TouchableHighlight underlayColor="green" onPress={() => {}}>
           <View style={styles.container}>
             <Image style={styles.photo} source={AppIcon.images.classroom} />
@@ -138,9 +115,9 @@ export default function RoomScreen ({ route, navigation }) {
             />
             <Text style={{ color: 'black' }}>Sala {roomName}</Text>
             <Text style={{ color: 'black' }}>Não confirmados</Text>
-            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={items['unconfirmedItems']} renderItem={renderItems} keyExtractor={(item) => `${item.recipeId}`} />
+            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={items['unconfirmedItems']} renderItem={renderUnconfirmedItems} keyExtractor={(item) => item} />
             <Text style={{ color: 'black' }}>Confirmados</Text>
-            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={items['confirmedItems']} renderItem={renderItemsConfirmed} keyExtractor={(item) => `${item.recipeId}`} />
+            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={items['confirmedItems']} renderItem={renderConfirmedItems} keyExtractor={(item) => item} />
         </View>
         
 

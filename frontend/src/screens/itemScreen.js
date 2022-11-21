@@ -48,8 +48,7 @@ export default function ItemScreen ({ route, navigation }) {
     }
 
     const handleMoveItem = (roomInput) => {
-        EventEmitter.notify('OnInventoryItemMove', roomInput, itemId, roomId)
-        EventEmitter.notify('OnItemMove', itemId)
+        EventEmitter.notify('OnItemMove', itemId, roomId, roomInput)
         showDialog(false)
         navigation.goBack()
     }

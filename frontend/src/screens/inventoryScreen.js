@@ -6,7 +6,7 @@ import { Button, StyleSheet, View, Text, TouchableHighlight, FlatList,  Dimensio
 
 import EventEmitter from './EventEmitter';
 
-import { getData, updatePatrimonio, findById } from '../api/functions';
+import { getData, findBylocalN2 } from '../api/functions';
 
 // orientation must fixed
 const { width, height } = Dimensions.get('window');
@@ -14,104 +14,115 @@ const SCREEN_WIDTH = width < height ? width : height;
 
 export default function InventoryScreen({ route, navigation }) {
     const [roomList, setRoomList] = useState([])
-
     const [missingRooms, setMissingRooms] = useState([])
 
-    const [items, setItems] = useState({
-        inventoryConfirmedItems: {},
-        inventoryUnconfirmedItems: {}
-    })
+    const [items, setItems] = useState({})
 
-    const [loadItems, setLoadItems] = useState(true)
+    const [isFirstLoad, setFirstLoad] = useState(true)
 
-    const [movedItems, setMovedItems] = useState([])
+    const [itemMoves, setItemMoves] = useState([])
 
     const [dummy, setDummy] = useState(0)
-
-    let tempList = []
 
 
     useEffect(() => {
         const fetchData = async () => {
             
-            const result = await getData();
-            createRoomList(result['data'])
-            // createItemsList(result['data'])
+            const allData = await getData();
+
+            let tempRoomList = createRoomList(allData['data']);
+
+            let tempItems = items
+
+            for(let i = 0; i < tempRoomList.length; i++) {
+                const roomData = await findBylocalN2(tempRoomList[i]);
+
+                const roomUnconfirmedItems = extractItems(roomData['data'])
+
+                const tempRoomName = tempRoomList[i]
+
+                tempItems[tempRoomName] = {
+                    confirmedItems: [],
+                    unconfirmedItems: roomUnconfirmedItems
+                }
+
+            }
+
+            setItems(tempItems)
 
         }
 
-        const updateInventoryConfirmedItems = (room, confirmedItems, unconfirmedItems) => {
-            setDummy(dummy+1)
+        const moveItemInventory = (itemId, prevRoomId, newRoomId) => {
+            let tempItems = items
+            if(!tempItems[newRoomId]['confirmedItems'].includes(itemId)){
+                tempItems[newRoomId]['confirmedItems'].push(itemId)
+                setItems(tempItems)
+            }
 
-            tempItems = items
+            let tempMoves = itemMoves
+            if(!tempMoves.includes(prevRoomId)){
+                tempMoves.push({
+                    itemId: itemId,
+                    prevRoom: prevRoomId,
+                    newRoom: newRoomId
+                })
+                setItemMoves(tempMoves)
+            }
 
-            tempItems['inventoryConfirmedItems'][room] = confirmedItems
-            tempItems['inventoryUnconfirmedItems'][room] = unconfirmedItems
-
-            const index = missingRooms.indexOf(room)
-            let tempMissingRooms = missingRooms
-
-            tempMissingRooms.splice(index, 1);
-
-
-            setItems(tempItems)  
-            setMissingRooms(tempMissingRooms)
+            
         }
 
-        const updateMoveItems = (roomInput, itemId, roomId) => {
+        // EventEmitter.addListener("OnInventoryItemConfirm", updateInventoryConfirmedItems)
+        EventEmitter.addListener("OnInventoryItemMove", moveItemInventory)
 
-            let tempMovedItems = movedItems
-            tempMovedItems.push({
-                item: itemId,
-                salaAntiga: roomId,
-                salaNova: roomInput
-            })
-
-            setMovedItems(tempMovedItems)
-
-            setDummy(dummy+1)
+        if(isFirstLoad){
+            fetchData()
+            setFirstLoad(false)
         }
-
-        EventEmitter.addListener("OnInventoryItemConfirm", updateInventoryConfirmedItems)
-        EventEmitter.addListener("OnInventoryItemMove", updateMoveItems)
-
-        fetchData()
 
         return () => {
-            EventEmitter.removeListener("OnInventoryItemConfirm", updateInventoryConfirmedItems)
-            EventEmitter.removeListener("OnInventoryItemMove", updateMoveItems)
+            // EventEmitter.removeListener("OnInventoryItemConfirm", updateInventoryConfirmedItems)
+            EventEmitter.removeListener("OnInventoryItemMove", moveItemInventory)
         }
     }, [])
 
     // Cria listas de salas
     const createRoomList = (objList) => {
-        objList.forEach(extractRooms)
-        setRoomList(roomList.filter(onlyUnique))
-        setMissingRooms(roomList.filter(onlyUnique))
-    }
+        let tempRoomList = []
+        for(let i = 0; i < objList.length; i++) {
+            tempRoomList.push(objList[i]["localN2"])
+        }
+        tempRoomList = tempRoomList.filter(onlyUnique).filter(room => room.startsWith("SALA")).sort()
+        setRoomList(tempRoomList)
+        setMissingRooms(tempRoomList)
 
-    const extractRooms = (roomObject) => {
-        roomList.push(roomObject['localN2'])
+        return tempRoomList
     }
 
     function onlyUnique(value, index, self) {
         return self.indexOf(value) === index;
     }
+
+     // Cria listas de item por sala
+     const extractItems = (objList) => {
+        let itemList = []
+        for(let i = 0; i < objList.length; i++) {
+            itemList.push(objList[i]["_id"])
+        }
+        return itemList
+    }
+
+   
     
     // Clica no botão
     const onPressRoom = (item) => {
         setDummy(dummy+1)
-        const index = missingRooms.indexOf(item)
-        const firstVisit = index != -1
         navigation.navigate("Room", {
-            roomName: item, 
-            firstVisit: firstVisit,
-            confirmedItems: items['inventoryConfirmedItems'][item],
-            unconfirmedItems: items['inventoryUnconfirmedItems'][item]
+            items: items[item],
+            roomName: item,
+            roomList: roomList
         });
     };
-
-
 
     const handleButton = () => {
         console.log(handleGerarRelatorio())
@@ -119,24 +130,25 @@ export default function InventoryScreen({ route, navigation }) {
 
     const handleGerarRelatorio = () => {
         let msg = "Movimentações realizadas:\n"
-        for(let i = 0; i < movedItems.length; i++) {
-            msg += "\tId patrimônio: " + movedItems[i]['item'] + "\n"
-            msg += "\tSala antiga: " + movedItems[i]['salaAntiga'] + "\n"
-            msg += "\tSala Nova: " + movedItems[i]['salaNova'] + "\n"
+        for(let i = 0; i < itemMoves.length; i++) {
+            msg += "\t##########\n"
+            msg += "\tId patrimônio: " + itemMoves[i]['itemId'] + "\n"
+            msg += "\tSala antiga: " + itemMoves[i]['prevRoom'] + "\n"
+            msg += "\tSala Nova: " + itemMoves[i]['newRoom'] + "\n"
         }
 
         msg += "\nPatrimônios não encontrados:\n"
 
-        for(const sala in items['inventoryUnconfirmedItems']) {
-
+        for(const sala in items) {
             msg += "Sala: "+ sala + "\n"
-            for(let i = 0; i < items['inventoryUnconfirmedItems'][sala].length; i++) {
-                msg += "\t" + items['inventoryUnconfirmedItems'][sala][i] + "\n"
+            for(let i = 0; i < items[sala]['unconfirmedItems'].length; i++) {
+                msg += "\t" + items[sala]['unconfirmedItems'][i] + "\n"
 
             }
 
             msg += "\n"
         }
+
 
         return msg
     }
@@ -160,7 +172,7 @@ export default function InventoryScreen({ route, navigation }) {
                 title='teste'
                 onPress={() => handleButton()}
             />
-            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={roomList} renderItem={renderRoom} keyExtractor={(item) => `${item.recipeId}`} />
+            <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={roomList} renderItem={renderRoom} keyExtractor={(item) => item} />
         </View>
     );
     
