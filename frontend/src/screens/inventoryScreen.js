@@ -158,7 +158,7 @@ export default function InventoryScreen({route, navigation}) {
   const {inventory_num, inventory_name} = route.params;
 
   const renderRoom = ({item}) => (
-    <TouchableHighlight underlayColor="grey" onPress={() => onPressRoom(item)}>
+    <TouchableHighlight onPress={() => onPressRoom(item)}>
       <View style={styles.container}>
         <Image style={styles.photo} source={AppIcon.images.classroom} />
         <Text style={styles.title}>{item}</Text>
@@ -167,12 +167,13 @@ export default function InventoryScreen({route, navigation}) {
   );
 
   return (
-    <View>
-      <Text style={{color: 'black'}}>{inventory_name}</Text>
+    <View style={styles.btnContainer}>
+      <Text style={AppStyles.fonts}>{inventory_name}</Text>
       <Pressable style={AppIcon.button} onPress={() => handleButton()}>
         <Text style={[AppStyles.buttonText]}>Gerar Relatório</Text>
       </Pressable>
       <FlatList
+        style={styles.flatList}
         vertical
         showsVerticalScrollIndicator={false}
         numColumns={2}
@@ -197,9 +198,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   btnContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: AppStyles.color.white,
+  },
+  flatList: {
+    marginTop: 10,
   },
   container: {
     flex: 1,
@@ -212,6 +216,7 @@ const styles = StyleSheet.create({
     borderColor: '#cccccc',
     borderWidth: 0.5,
     borderRadius: 15,
+    backgroundColor: '#DCDCDC',
   },
   photo: {
     width: (SCREEN_WIDTH - (numColums + 1) * ITEM_MARGIN) / numColums,

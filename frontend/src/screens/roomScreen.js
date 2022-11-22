@@ -100,31 +100,34 @@ export default function RoomScreen({route, navigation}) {
   };
 
   const renderUnconfirmedItems = ({item}) => (
-    <TouchableHighlight
-      underlayColor="grey"
-      onPress={() => onPressUnconfirmed(item)}>
+    <TouchableHighlight onPress={() => onPressUnconfirmed(item)}>
       <View style={styles.container}>
-        <Image style={styles.photo} source={AppIcon.images.classroom} />
+        <Image style={styles.photo} source={AppIcon.images.monitor} />
         <Text style={styles.title}>{item}</Text>
       </View>
     </TouchableHighlight>
   );
 
+  const images = [AppIcon.images.classroom, AppIcon.images.sala];
+
   const renderConfirmedItems = ({item}) => (
     <TouchableHighlight underlayColor="green" onPress={() => {}}>
       <View style={styles.container}>
-        <Image style={styles.photo} source={AppIcon.images.classroom} />
+        <Image style={styles.photo} source={images[0 || 1]} />
         <Text style={styles.title}>{item}</Text>
       </View>
     </TouchableHighlight>
   );
 
   return (
-    <View>
-      <Button title="teste" onPress={() => handleButton('790988')} />
-      <Text style={{color: 'black'}}>Sala {roomName}</Text>
-      <Text style={{color: 'black'}}>Não confirmados</Text>
+    <View style={styles.btnContainer}>
+      <Pressable style={AppIcon.button} onPress={() => handleButton('790988')}>
+        <Text style={[AppStyles.buttonText]}>Teste</Text>
+      </Pressable>
+      <Text style={AppStyles.fonts}>{roomName}</Text>
+      <Text style={AppStyles.fonts}>NÃO CONFIRMADOS:</Text>
       <FlatList
+        style={styles.flatList}
         vertical
         showsVerticalScrollIndicator={false}
         numColumns={2}
@@ -132,8 +135,9 @@ export default function RoomScreen({route, navigation}) {
         renderItem={renderUnconfirmedItems}
         keyExtractor={item => item}
       />
-      <Text style={{color: 'black'}}>Confirmados</Text>
+      <Text style={AppStyles.fonts}>CONFIRMADOS:</Text>
       <FlatList
+      style={styles.flatList}
         vertical
         showsVerticalScrollIndicator={false}
         numColumns={2}
@@ -159,8 +163,12 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  flatList: {
+    marginBottom: 20,
+    marginTop: 20,
   },
   container: {
     flex: 1,
@@ -173,6 +181,7 @@ const styles = StyleSheet.create({
     borderColor: '#cccccc',
     borderWidth: 0.5,
     borderRadius: 15,
+    backgroundColor: '#DCDCDC',
   },
   photo: {
     width: (SCREEN_WIDTH - (numColums + 1) * ITEM_MARGIN) / numColums,

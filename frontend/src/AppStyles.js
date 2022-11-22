@@ -32,6 +32,7 @@ export const AppStyles = {
   },
   fonts: {
     fontSize: 15,
+    fontWeight: 'bold',
     color: 'black',
     marginTop: 10,
   },
@@ -77,6 +78,7 @@ export const AppIcon = {
     fecha: require('../src/assets/icons/close.png'),
     pergunta: require('../src/assets/icons/problem.png'),
     scanner: require('../src/assets/icons/scanner.png'),
+    monitor: require('../src/assets/icons/monitor.png'),
   },
   button: {
     width: 200,

@@ -23,13 +23,18 @@ export default function HomeScreen({navigation}) {
       <View style={styles.IconContainer}>
         <Pressable
           style={styles.loginContainer}
-          onPress={() => navigation.navigate('InventoryList')}>
+          onPress={() => navigation.navigate('Inventory')}>
           <Image source={AppIcon.images.inventario} style={styles.btnIcon} />
         </Pressable>
         <Pressable
           style={AppIcon.button}
-          onPress={() => navigation.navigate('InventoryList')}>
-          <Text style={[AppStyles.buttonText]}>Planilha</Text>
+          onPress={() =>
+            navigation.navigate('Inventory', {
+              inventory_num: 1,
+              inventory_name: 'Inventário 2022',
+            })
+          }>
+          <Text style={[AppStyles.buttonText]}>Inventário</Text>
         </Pressable>
       </View>
     </View>
@@ -52,6 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: AppStyles.color.white,
   },
   title: {
     fontSize: AppStyles.fontSize.title,
