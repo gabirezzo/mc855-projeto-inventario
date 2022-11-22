@@ -6,7 +6,7 @@ Para rodar o servidor é necessário rodar o comando `npm install` para fazer o 
 
 ## Configurando e integrando com o banco de dados
 
-O banco de dados será mantido na plataforma Cloud do MongoDB, Atlas. Para acessá-lo é necessário criar um arquivo `.env` na raiz da pasta `/backend` utilizando o `.env.example` como exemplo, porém devem ser inseridas as credenciais corretamente. Uma vez com o banco configurado, é possível realizar consultas e inserções através das rotas disponibilizadas no arquivo `src/app.js`.
+O banco de dados será mantido na plataforma Cloud do MongoDB, Atlas. Para acessá-lo é necessário criar um arquivo `.env` na raiz da pasta `/backend` utilizando o `.env.example` como exemplo, porém devem ser inseridas as credenciais corretamente. Uma vez com o banco configurado, é possível realizar consultas e inserções através das rotas disponibilizadas no arquivo `src/router.js`.
 
 ## Consumindo a aplicação
 
