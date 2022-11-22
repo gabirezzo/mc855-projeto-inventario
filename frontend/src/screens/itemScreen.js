@@ -56,8 +56,8 @@ export default function ItemScreen({route, navigation}) {
       <View style={styles.IconContainer}>
         <Text style={AppStyles.fonts}>PATRIMÔNIO ID: {item._id}</Text>
         <Text style={AppStyles.fonts}>Descrição: {item.descricao}</Text>
-        <Text style={AppStyles.fonts}>Sala: {item.sala}</Text>
-        <Text style={AppStyles.fonts}>Prédio: {item.predio}</Text>
+        {/* <Text style={AppStyles.fonts}>Sala: {item.sala}</Text>
+        <Text style={AppStyles.fonts}>Prédio: {item.predio}</Text> */}
         <View style={styles.btnContainer}>
           <Pressable
             style={styles.loginContainer}
