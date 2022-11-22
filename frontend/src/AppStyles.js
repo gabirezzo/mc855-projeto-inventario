@@ -79,6 +79,7 @@ export const AppIcon = {
     pergunta: require('../src/assets/icons/problem.png'),
     scanner: require('../src/assets/icons/scanner.png'),
     monitor: require('../src/assets/icons/monitor.png'),
+    cadeira: require('../src/assets/icons/desk-chair.png'),
   },
   button: {
     width: 200,

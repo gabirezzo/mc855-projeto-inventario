@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   loginContainer: {
-    width: 100,
+    width: 130,
     borderRadius: AppStyles.borderRadius.main,
     padding: 10,
     marginTop: 30,

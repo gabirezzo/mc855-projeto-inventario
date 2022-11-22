@@ -108,12 +108,12 @@ export default function RoomScreen({route, navigation}) {
     </TouchableHighlight>
   );
 
-  const images = [AppIcon.images.classroom, AppIcon.images.sala];
-
   const renderConfirmedItems = ({item}) => (
-    <TouchableHighlight underlayColor="green" onPress={() => {}}>
+    <TouchableHighlight
+      underlayColor={AppStyles.color.background}
+      onPress={() => {}}>
       <View style={styles.container}>
-        <Image style={styles.photo} source={images[0 || 1]} />
+        <Image style={styles.photo} source={AppIcon.images.cadeira} />
         <Text style={styles.title}>{item}</Text>
       </View>
     </TouchableHighlight>
@@ -121,9 +121,6 @@ export default function RoomScreen({route, navigation}) {
 
   return (
     <View style={styles.btnContainer}>
-      <Pressable style={AppIcon.button} onPress={() => handleButton('790988')}>
-        <Text style={[AppStyles.buttonText]}>Teste</Text>
-      </Pressable>
       <Text style={AppStyles.fonts}>{roomName}</Text>
       <Text style={AppStyles.fonts}>NÃO CONFIRMADOS:</Text>
       <FlatList
@@ -137,7 +134,7 @@ export default function RoomScreen({route, navigation}) {
       />
       <Text style={AppStyles.fonts}>CONFIRMADOS:</Text>
       <FlatList
-      style={styles.flatList}
+        style={styles.flatList}
         vertical
         showsVerticalScrollIndicator={false}
         numColumns={2}

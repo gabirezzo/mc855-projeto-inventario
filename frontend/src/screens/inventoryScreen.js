@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {AppStyles} from '../AppStyles';
 import {AppIcon} from '../AppStyles';
 import {
-  Button,
+  Alert,
   StyleSheet,
   View,
   Text,
@@ -128,8 +128,8 @@ export default function InventoryScreen({route, navigation}) {
     });
   };
 
-  const handleButton = () => {
-    console.log(handleGerarRelatorio());
+  const openRelatorio = () => {
+    Alert.alert('Relatório Atualizado', handleGerarRelatorio());
   };
 
   const handleGerarRelatorio = () => {
@@ -169,7 +169,7 @@ export default function InventoryScreen({route, navigation}) {
   return (
     <View style={styles.btnContainer}>
       <Text style={AppStyles.fonts}>{inventory_name}</Text>
-      <Pressable style={AppIcon.button} onPress={() => handleButton()}>
+      <Pressable style={AppIcon.button} onPress={() => openRelatorio()}>
         <Text style={[AppStyles.buttonText]}>Gerar Relatório</Text>
       </Pressable>
       <FlatList

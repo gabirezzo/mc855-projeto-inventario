@@ -19,7 +19,7 @@ export default function LoginScreen({navigation}) {
   return (
     <View style={styles.container}>
       <Image source={AppIcon.images.logo} style={styles.btnIcon} />
-      <Text style={[styles.title, styles.leftTitle]}>Login</Text>
+      <Text style={[styles.title, styles.leftTitle]}>LOG IN</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   btnIcon: {
-    height: 150,
+    height: 170,
     width: 200,
   },
   body: {
