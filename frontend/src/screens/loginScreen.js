@@ -1,4 +1,3 @@
-import {color} from '@rneui/base';
 import React, {useEffect, useState} from 'react';
 import {
   Pressable,
@@ -7,8 +6,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  Alert,
-  ActivityIndicator,
 } from 'react-native';
 import {AppStyles} from '../AppStyles';
 import {AppIcon} from '../AppStyles';

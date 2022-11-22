@@ -30,7 +30,6 @@ export default function HomeScreen({navigation}) {
           style={AppIcon.button}
           onPress={() =>
             navigation.navigate('Inventory', {
-              inventory_num: 1,
               inventory_name: 'Inventário 2022',
             })
           }>

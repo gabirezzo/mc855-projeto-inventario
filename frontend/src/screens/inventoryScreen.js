@@ -155,7 +155,7 @@ export default function InventoryScreen({route, navigation}) {
     return msg;
   };
 
-  const {inventory_num, inventory_name} = route.params;
+  const {inventory_name} = route.params;
 
   const renderRoom = ({item}) => (
     <TouchableHighlight onPress={() => onPressRoom(item)}>
