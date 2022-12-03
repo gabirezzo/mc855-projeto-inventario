@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const PatrimonioController = require('./controllers/PatrimonioController')
-
+const import_tabela = require('./import_tabela.js')
 // GET
 router.get('/patrimonios', PatrimonioController.index)
 router.get('/patrimonios/:id', PatrimonioController.findById)
@@ -13,6 +13,8 @@ router.get('/patrimonios/localN4/:localN4', PatrimonioController.findBylocalN4)
 router.get('/patrimonios/localN5/:localN5', PatrimonioController.findBylocalN5)
 
 // PUT
+
+router.put('/tabela/export/:path', import_tabela.importTabela)
 router.put('/patrimonio/:id', PatrimonioController.updatePatrimonio)
 
 module.exports = router
