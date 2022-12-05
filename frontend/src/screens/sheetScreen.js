@@ -35,7 +35,7 @@ export default function SheetScreen({navigation}) {
         presentationStyle: 'fullScreen',
       });
       console.log(response)
-      setFileResponse(response[0]["uri"]);
+      setFileResponse(response[0]["uri"].replace('content://', ''));
     } catch (err) {
       console.warn(err);
     }
