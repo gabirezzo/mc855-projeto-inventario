@@ -16,6 +16,6 @@ router.get('/patrimonios/localN5/:localN5', PatrimonioController.findBylocalN5)
 router.put('/patrimonio/:id', PatrimonioController.updatePatrimonio)
 
 // POST
-router.post('/tabela/export/:path', import_tabela.exportTabela)
+router.post('/tabela/export/', import_tabela.exportTabela)
 
 module.exports = router
