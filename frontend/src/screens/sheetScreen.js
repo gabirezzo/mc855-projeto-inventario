@@ -34,7 +34,8 @@ export default function SheetScreen({navigation}) {
       const response = await DocumentPicker.pick({
         presentationStyle: 'fullScreen',
       });
-      setFileResponse(response[0]["uri"]);
+      console.log(response)
+      setFileResponse(response[0]["uri"].replace('content://', ''));
     } catch (err) {
       console.warn(err);
     }

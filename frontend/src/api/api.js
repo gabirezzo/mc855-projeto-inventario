@@ -14,4 +14,7 @@ export const updatePatrimonio = (idItem, itemBody) =>
 // export const createItem = (item)=>axios.post(url,item);
 
 
-export const uploadTabela = (pathTabela) => axios.put(url + 'tabela/export/' + pathTabela);
+export const uploadTabela = (pathTabela) =>{
+    console.log('path', url + 'tabela/export/' + pathTabela )
+     axios.post(url + 'tabela/export/', {path: pathTabela})
+    };
