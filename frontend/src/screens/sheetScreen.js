@@ -13,7 +13,7 @@ import {AppIcon} from '../AppStyles';
 import DocumentPicker from 'react-native-document-picker';
 
 import FileBase64 from 'react-file-base64';
-import {getData} from '../api/functions';
+import {uploadTabela} from '../api/functions';
 
 let a = '21/11/2022';
 
@@ -24,7 +24,9 @@ export default function SheetScreen({navigation}) {
 
   const onclickHandler = async () => {
     // const result = await getData();
+    const result = await uploadTabela(fileResponse);
     console.log(fileResponse);
+    console.log('result', result);
   };
 
   const handleDocumentSelection = async () => {
