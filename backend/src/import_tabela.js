@@ -17,7 +17,7 @@ const connectionParams = {
 
 module.exports = {
     async exportTabela(req, res) {
-        const path = req.params.path
+        const path = req.body.path
         //read the data
         const file = reader.readFile(path)
         const sheets = file.SheetNames
