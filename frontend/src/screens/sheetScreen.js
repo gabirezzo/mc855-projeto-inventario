@@ -10,50 +10,43 @@ import {
 import {AppStyles} from '../AppStyles';
 import {AppIcon} from '../AppStyles';
 
+import DocumentPicker from 'react-native-document-picker';
+
 import FileBase64 from 'react-file-base64';
-import {getData} from '../api/functions';
+import {uploadTabela} from '../api/functions';
 
 let a = '21/11/2022';
 
 export default function SheetScreen({navigation}) {
   const [items, setItems] = useState({});
   const [obs, setObs] = useState('');
+  const [fileResponse, setFileResponse] = useState([]);
 
   const onclickHandler = async () => {
-    // e.preventDefault();
-    const result = await getData();
-    // console.log(result['data'])
-    console.log(result.data[0].sala);
-    // console.log(result['data'][0]['sala'])
-    // setItems(result);
-    // console.log(JSON.stringify(items))
+    // const result = await getData();
+    const result = await uploadTabela(fileResponse);
+    console.log(fileResponse);
+    console.log('result', result);
   };
 
-  // useEffect(() => {
-  //     const fetchData = async () => {
-  //         console.log('ai mds q doido')
-  //         const result = await getItems();
-  //         console.log('fetch data;    m', result)
-  //         setItems(result)
-  //     }
-  //     fetchData()
-  // }, [])
+  const handleDocumentSelection = async () => {
+    try {
+      const response = await DocumentPicker.pick({
+        presentationStyle: 'fullScreen',
+      });
+      setFileResponse(response[0]["uri"]);
+    } catch (err) {
+      console.warn(err);
+    }
+  }
 
   return (
-    // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    //     <Button
-    //         title="planilha"
-    //         onPress={() => {}}
-    //     />
-    //     <Button
-    //         title="Upload"
-    //         style={styles.btnClickContain}
-    //         onPress={() => {}}
-    //     />
-    // </View>
     <View style={styles.container}>
       <Text style={[styles.title, styles.leftTitle]}>SOBRE A PLANILHA</Text>
-      <Image source={AppIcon.images.planilha} style={styles.btnIcon} />
+      <Pressable style={AppIcon.button} onPress={() => handleDocumentSelection()}>
+          <Image source={AppIcon.images.planilha} style={styles.btnIcon} />
+        </Pressable>
+      
       <Text style={AppStyles.fonts}>Ultima atualização: {a}</Text>
       <View style={styles.InputContainer}>
         <TextInput

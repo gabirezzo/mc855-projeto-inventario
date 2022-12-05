@@ -36,6 +36,15 @@ export const updatePatrimonio = async (idItem, itemBody) => {
   }
 };
 
+export const uploadTabela = async (pathTabela) => {
+    try {
+      const data = await api.uploadTabela(pathTabela);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 // export const sendData = async (todo) => {
 //     try {
 //         const {
