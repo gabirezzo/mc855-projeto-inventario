@@ -71,5 +71,6 @@ module.exports = {
             console.log('item numero ' + i + ' saved to database.')
           })
         }
+        return res.json()
     }
 }
